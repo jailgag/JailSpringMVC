@@ -4,10 +4,12 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.jail.spring.member.controller.dto.JoinRequest;
+import com.jail.spring.member.controller.dto.LoginRequest;
+import com.jail.spring.member.controller.dto.ModifyRequest;
 import com.jail.spring.member.domain.MemberVO;
 import com.jail.spring.member.service.MemberService;
 import com.jail.spring.member.store.MemberStore;
-import com.jail.spring.member.store.impl.MemberStoreLogic;
 
 @Service
 public class MemberServiceImpl implements MemberService{
@@ -19,7 +21,7 @@ public class MemberServiceImpl implements MemberService{
 	private SqlSession session;
 	
 	@Override
-	public int insertMember(MemberVO member) {
+	public int insertMember(JoinRequest member) {
 		// TODO Auto-generated method stub
 		int result = mStore.insertMember(session, member);
 		//아래코드는 바뀜!!
@@ -30,7 +32,7 @@ public class MemberServiceImpl implements MemberService{
 	}
 
 	@Override
-	public int updateMember(MemberVO member) {
+	public int updateMember(ModifyRequest member) {
 		// TODO Auto-generated method stub
 		int result = mStore.updateMember(session, member);
 		return result;
@@ -44,7 +46,7 @@ public class MemberServiceImpl implements MemberService{
 	}
 
 	@Override
-	public MemberVO selectOneByLogin(MemberVO member) {
+	public MemberVO selectOneByLogin(LoginRequest member) {
 		// TODO Auto-generated method stub
 		//로그인꺼!!!!!!
 		MemberVO result = mStore.selectOneByLogin(session,member);
@@ -52,7 +54,7 @@ public class MemberServiceImpl implements MemberService{
 		
 	}
 
-	public MemberVO selectOneById(MemberVO member) {
+	public MemberVO selectOneById(LoginRequest member) {
 		// TODO Auto-generated method stub
 		//member에서 result로 바꿔줌!
 		MemberVO result = mStore.selectOneByLogin(session, member);

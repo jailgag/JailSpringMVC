@@ -4,6 +4,9 @@ package com.jail.spring.member.store;
 
 import org.apache.ibatis.session.SqlSession;
 
+import com.jail.spring.member.controller.dto.JoinRequest;
+import com.jail.spring.member.controller.dto.LoginRequest;
+import com.jail.spring.member.controller.dto.ModifyRequest;
 import com.jail.spring.member.domain.MemberVO;
 
 public interface MemberStore {
@@ -15,14 +18,14 @@ public interface MemberStore {
 	 * @param member
 	 * @return
 	 */
-	int insertMember(SqlSession session ,MemberVO member);
+	int insertMember(SqlSession session ,JoinRequest member);
 	/**
 	 * 회원 정보수정store
 	 * @param session
 	 * @param member
 	 * @return
 	 */
-	int updateMember(SqlSession session ,MemberVO member);
+	int updateMember(SqlSession session ,ModifyRequest member);
 	
 	/**
 	 * 회원 정보 삭제store
@@ -40,7 +43,7 @@ public interface MemberStore {
 	 * @return
 	 */
 	
-	MemberVO selectOneByLogin(SqlSession session ,MemberVO member);
+	MemberVO selectOneByLogin(SqlSession session ,LoginRequest member);
 	/**
 	 * 회원정보 아이디로 조회store
 	 * @param session

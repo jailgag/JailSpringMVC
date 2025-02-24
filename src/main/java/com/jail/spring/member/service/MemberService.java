@@ -1,5 +1,8 @@
 package com.jail.spring.member.service;
 
+import com.jail.spring.member.controller.dto.JoinRequest;
+import com.jail.spring.member.controller.dto.LoginRequest;
+import com.jail.spring.member.controller.dto.ModifyRequest;
 import com.jail.spring.member.domain.MemberVO;
 
 public interface MemberService {
@@ -9,13 +12,13 @@ public interface MemberService {
 	 * @param member
 	 * @return
 	 */
-	int insertMember(MemberVO member);
+	int insertMember(JoinRequest member);
 	/**
 	 * 회원정보수정 Service
 	 * @param member
 	 * @return
 	 */
-	int updateMember(MemberVO member);
+	int updateMember(ModifyRequest member);
 	/**
 	 * 회원정보삭제 Service
 	 * @param member
@@ -25,12 +28,12 @@ public interface MemberService {
 	int deleteMember(String memberId);
 	
 	/**
-	 * 회원정로그인 Service
+	 * 회원로그인 Service
 	 * @param member
 	 * @return
 	 */
 	
-	MemberVO selectOneByLogin(MemberVO member);
+	MemberVO selectOneByLogin(LoginRequest member);
 	
 	/**
 	 * 아이디로 검색 Service
