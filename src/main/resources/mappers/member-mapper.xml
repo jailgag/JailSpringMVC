@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="MemberMapper">
+	<resultMap type="Member" id="loginResultMap">
+		<id property="memberId" column="MEMBER_ID"/>
+		<result property="memberPw" column="MEMBER_PW"/>
+		<result property="memberName" column="MEMBER_NAME"/>
+	</resultMap>
+	
+	<resultMap type="Member" id="memberResultMap">
+		<id property="memberId" column="MEMBER_ID"/>
+		<result property="memberPw" column="MEMBER_PW"/>
+		<result property="memberName" column="MEMBER_NAME"/>
+		<result property="memberAge" column="member_AGE"/>
+		<result property="memberGender" column="member_GENDER"/>
+		<result property="memberEmail" column="member_EMAIL"/>
+		<result property="memberPhone" column="member_PHONE"/>
+		<result property="memberAddress" column="member_ADDRESS"/>
+		<result property="memberDate" column="member_DATE"/>
+		<result property="modifyDate" column="modify_DATE"/>
+		<result property="memberYn" column="member_YN"/>
+	</resultMap>
+	
+	
+	<insert id="insertMember">
+		INSERT INTO MEMBER_TBL VALUES(#{memberId},#{memberPw},#{memberName},#{memberAge},#{memberGender},#{memberEmail},#{memberPhone},#{memberAddress},DEFAULT,DEFAULT,DEFAULT)
+	</insert>
+	
+	<select id="selectOneByLogin" resultMap="loginResultMap">
+		SELECT * FROM MEMBER_TBL WHERE MEMBER_ID = #{memberId} AND MEMBER_PW = #{memberPw}
+	</select>
+	
+	<select id="selectOneById" resultMap="memberResultMap">
+		SELECT * FROM MEMBER_TBL WHERE MEMBER_ID = #{memberId}
+	</select>
+	
+	<delete id="deleteMember">
+		DELETE FROM MEMBER_TBL WHERE MEMBER_ID = #{memberId}
+	</delete>
+	
+	<update id="updateMember">
+		UPDATE MEMBER_TBL SET MEMBER_PW = #{memberPw} ,MEMBER_EMAIL=#{memberEmail}
+		,MEMBER_PHONE= #{memberPhone}, MEMBER_ADDRESS=#{memberAddress}, MODIFY_DATE=DEFAULT WHERE MEMBER_ID = #{memberId}	
+	</update>
+	
+</mapper>
