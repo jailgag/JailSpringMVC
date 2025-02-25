@@ -112,24 +112,17 @@ public class NoticeController {
  				String noticeFilename= null;
  				String noticeFileRename = null;
  				String noticeFilepath = null;
- 				Map<String, String> fileInfo = fileUtil.saveFile(reloadFile, session);
- 				noticeFilename = fileInfo.get("noticeFilename");
- 				if(noticeFilename != null) {
- 					noticeFileRename = fileInfo.get("noticeFileRename");
- 					noticeFilepath = fileInfo.get("noticeFilepath");
- 					// 					String ext = noticeFilename.substring(noticeFilename.lastIndexOf(".")+1);
-// 					//String renameStr = UUID.randomUUID() +;
-// 					noticeFileRename= UUID.randomUUID()+"."+ ext;
-// 					String folderPath = session.getServletContext().getRealPath("/resources.nUploadFiles");
-// 					String savePath = folderPath + "\\" + noticeFileRename;
-// 					reloadFile.transferTo(new File(savePath));//파일저장!!
-// 					noticeFilepath = "/resources/nUploadFiles/" + noticeFileRename;
+ 				if(reloadFile != null && !reloadFile.getOriginalFilename().isBlank()) {
+ 					Map<String, String> fileInfo = fileUtil.saveFile(reloadFile, session);
+ 					noticeFilename = fileInfo.get("noticeFilename");
+ 					if(noticeFilename != null) {
+ 						noticeFileRename = fileInfo.get("noticeFileRename");
+ 						noticeFilepath = fileInfo.get("noticeFilepath");
+ 					}
+ 					notice.setNoticeFilename(noticeFilename);
+ 					notice.setNoticeFileRename(noticeFileRename);
+ 					notice.setNoticeFilepath(noticeFilepath);
  				}
- 				
-//				NoticeVO notice = new NoticeVO(noticeNo, noticeSubject, noticeContent, noticeFilename, noticeFileRename, noticeFilepath);
- 				notice.setNoticeFilename(noticeFilename);
- 				notice.setNoticeFileRename(noticeFileRename);
- 				notice.setNoticeFilepath(noticeFilepath);
  				int result =  nService.updateNotice(notice);
  				if(result > 0) {
  					return "redirect:/notice/detail?noticeNo="+notice.getNoticeNo();
@@ -169,22 +162,6 @@ public class NoticeController {
 			List<NoticeVO> nList = nService.selectList(currentPage);
 			int totalCount = nService.getTotalCount();
 			Map<String, Integer> pageInfo =  pageUtil.generatePageInfo(totalCount, currentPage);
-			//			int boardLimit = 10;
-//			int maxPage = 0;
-			
-//			if(totalCount % boardLimit !=0) {
-//				maxPage = totalCount /boardLimit +1;
-//			}else {
-//				maxPage = totalCount /boardLimit;
-//			}
-//			int naviLimit = 5;
-//			
-//			int startNavi = ((currentPage-1)/naviLimit)*naviLimit+1;
-//			int endNavi = (startNavi-1)+naviLimit;
-//			if(endNavi > maxPage ) {
-//				endNavi = maxPage;
-//			}
-			
 			if(!nList.isEmpty()) {
 				model.addAttribute("maxPage",pageInfo.get("maxPage"));
 				model.addAttribute("startNavi",pageInfo.get("startNavi"));
