@@ -1,12 +1,8 @@
 package com.jail.spring.notice.controller;
 
-import java.io.File;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 import javax.servlet.http.HttpSession;
 
@@ -19,6 +15,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.jail.spring.common.FileUtil;
+import com.jail.spring.common.PageUtil;
+import com.jail.spring.notice.controller.dto.NoticeAddRequest;
+import com.jail.spring.notice.controller.dto.NoticeModifyRequest;
 import com.jail.spring.notice.domain.NoticeVO;
 import com.jail.spring.notice.service.NoticeService;
 
@@ -27,10 +27,16 @@ public class NoticeController {
 	
 	
 	private NoticeService nService;
+	//1추가
+	private FileUtil fileUtil;
+	//2추가
+	private PageUtil pageUtil;
 	
 	@Autowired
-	public NoticeController(NoticeService nService) {
+	public NoticeController(NoticeService nService,FileUtil fileUtil,PageUtil pageUtil) {
 		this.nService = nService;
+		this.fileUtil = fileUtil;
+		this.pageUtil = pageUtil;
 	}
 	
 	@RequestMapping(value="/notice/insert", method=RequestMethod.GET)
@@ -38,36 +44,31 @@ public class NoticeController {
 		return "notice/insert";
 	}
 	@RequestMapping(value="/notice/insert", method=RequestMethod.POST)
-	public String noticeInsert(@RequestParam("noticeSubject") String noticeSubject
-			,@RequestParam("noticeContent") String noticeContent
+	public String noticeInsert(
+			@ModelAttribute NoticeAddRequest notice
 			,@RequestParam("uploadFile") MultipartFile uploadFile
-			,HttpSession session,Model model) { 
+			,HttpSession session
+			,Model model) { 
 			try {
 				String noticeWriter = session.getAttribute("memberId") != null 
 						?(String)session.getAttribute("memberId") : "anonymous";
-				String noticeFilename = uploadFile.getOriginalFilename();
+				String noticeFilename = null;
 				String noticeFileRename = null;
 				String noticeFilepath = null;
+				Map<String,String> fileInfo =fileUtil.saveFile(uploadFile,session);
+				noticeFilename = fileInfo.get("noticeFilename");
 				if(noticeFilename != null) {
+					noticeFileRename = fileInfo.get("noticeFileRename");
+					noticeFilepath  = fileInfo.get("noticeFilepath");
 					
-					
-					//시간을 이용하기위한 simpleDatefomat
-					SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
-					//Date임포트는 유틸패키지로!지금시간이 나온다!위yyyy랑같은코드로묶는다?이걸로파일이름을할거다(시분초로)
-					//현재시간을 내가 원하는 패턴으로 변환
-					String transStr = sdf.format(new Date(System.currentTimeMillis())); 
-					//원본파일의 확장자 가져오기
-					String ext = noticeFilename.substring(noticeFilename.lastIndexOf(".")+1);
-					//파일이름 변경완료
-					noticeFileRename = transStr +"." +ext;
-					noticeFilepath ="/resources/nUploadFiles/"+noticeFileRename;
-					
-					String folderPath = session.getServletContext().getRealPath("/resources/nUploadFiles");
-					String savePath = folderPath +"\\"+ noticeFileRename;
-					uploadFile.transferTo(new File(savePath));
 				}
 				//NoticeVO notice = new NoticeVO(noticeSubject, noticeContent, noticeWriter);
-				NoticeVO notice = new NoticeVO(noticeSubject, noticeContent, noticeWriter, noticeFilename, noticeFileRename, noticeFilepath);
+				//noticeFilename = fileInfo.get("noticeFilname");
+				//NoticeVO notice = new NoticeVO(noticeSubject, noticeContent, noticeWriter, noticeFilename, noticeFileRename, noticeFilepath);
+				notice.setNoticeWriter(noticeWriter);
+				notice.setNoticeFilename(noticeFilename);
+				notice.setNoticeFileRename(noticeFileRename);
+				notice.setNoticeFilepath(noticeFilepath);
 				int result = nService.insertNotice(notice);
 				if(result > 0 ) {
 					return "redirect:/notice/list";
@@ -98,30 +99,40 @@ public class NoticeController {
 		}
 	}
 	@RequestMapping(value="/notice/update", method=RequestMethod.POST)
- 	public String updateNotice(@RequestParam("noticeNo")int noticeNo
- 			,@RequestParam("noticeSubject") String noticeSubject
- 			,@RequestParam("noticeContent") String noticeContent
+ 	public String updateNotice(
+ 			//@RequestParam("noticeNo")int noticeNo
+ 			//,@RequestParam("noticeSubject") String noticeSubject
+ 			//,@RequestParam("noticeContent") String noticeContent
+ 			@ModelAttribute NoticeModifyRequest notice
  			,@RequestParam("reloadFile") MultipartFile reloadFile
  			,HttpSession session
  			,Model model) {
  			try {
-				String noticeFilename = reloadFile.getOriginalFilename();
+				//String noticeFilename = reloadFile.getOriginalFilename();
+ 				String noticeFilename= null;
  				String noticeFileRename = null;
  				String noticeFilepath = null;
+ 				Map<String, String> fileInfo = fileUtil.saveFile(reloadFile, session);
+ 				noticeFilename = fileInfo.get("noticeFilename");
  				if(noticeFilename != null) {
- 					String ext = noticeFilename.substring(noticeFilename.lastIndexOf(".")+1);
- 					//String renameStr = UUID.randomUUID() +;
- 					noticeFileRename= UUID.randomUUID()+"."+ ext;
- 					String folderPath = session.getServletContext().getRealPath("/resources.nUploadFiles");
- 					String savePath = folderPath + "\\" + noticeFileRename;
- 					reloadFile.transferTo(new File(savePath));//파일저장!!
- 					noticeFilepath = "/resources/nUploadFiles/" + noticeFileRename;
+ 					noticeFileRename = fileInfo.get("noticeFileRename");
+ 					noticeFilepath = fileInfo.get("noticeFilepath");
+ 					// 					String ext = noticeFilename.substring(noticeFilename.lastIndexOf(".")+1);
+// 					//String renameStr = UUID.randomUUID() +;
+// 					noticeFileRename= UUID.randomUUID()+"."+ ext;
+// 					String folderPath = session.getServletContext().getRealPath("/resources.nUploadFiles");
+// 					String savePath = folderPath + "\\" + noticeFileRename;
+// 					reloadFile.transferTo(new File(savePath));//파일저장!!
+// 					noticeFilepath = "/resources/nUploadFiles/" + noticeFileRename;
  				}
  				
-				NoticeVO notice = new NoticeVO(noticeNo, noticeSubject, noticeContent, noticeFilename, noticeFileRename, noticeFilepath);
+//				NoticeVO notice = new NoticeVO(noticeNo, noticeSubject, noticeContent, noticeFilename, noticeFileRename, noticeFilepath);
+ 				notice.setNoticeFilename(noticeFilename);
+ 				notice.setNoticeFileRename(noticeFileRename);
+ 				notice.setNoticeFilepath(noticeFilepath);
  				int result =  nService.updateNotice(notice);
  				if(result > 0) {
- 					return "redirect:/notice.detail?noticeNo="+notice.getNoticeNo();
+ 					return "redirect:/notice/detail?noticeNo="+notice.getNoticeNo();
  					
  				}else {
  					model.addAttribute("errorMsg","수정이 완료되지 않았습니다");
@@ -157,25 +168,27 @@ public class NoticeController {
 			// ? Integer.parseInt(reqeust.getParameter("currentPage")) : "1";
 			List<NoticeVO> nList = nService.selectList(currentPage);
 			int totalCount = nService.getTotalCount();
-			int boardLimit = 10;
-			int maxPage = 0;
-			if(totalCount % boardLimit !=0) {
-				maxPage = totalCount /boardLimit +1;
-			}else {
-				maxPage = totalCount /boardLimit;
-			}
-			int naviLimit = 5;
+			Map<String, Integer> pageInfo =  pageUtil.generatePageInfo(totalCount, currentPage);
+			//			int boardLimit = 10;
+//			int maxPage = 0;
 			
-			int startNavi = ((currentPage-1)/naviLimit)*naviLimit+1;
-			int endNavi = (startNavi-1)+naviLimit;
-			if(endNavi > maxPage ) {
-				endNavi = maxPage;
-			}
+//			if(totalCount % boardLimit !=0) {
+//				maxPage = totalCount /boardLimit +1;
+//			}else {
+//				maxPage = totalCount /boardLimit;
+//			}
+//			int naviLimit = 5;
+//			
+//			int startNavi = ((currentPage-1)/naviLimit)*naviLimit+1;
+//			int endNavi = (startNavi-1)+naviLimit;
+//			if(endNavi > maxPage ) {
+//				endNavi = maxPage;
+//			}
 			
 			if(!nList.isEmpty()) {
-				model.addAttribute("maxPage",maxPage);
-				model.addAttribute("startNavi",startNavi);
-				model.addAttribute("endNavi",endNavi);
+				model.addAttribute("maxPage",pageInfo.get("maxPage"));
+				model.addAttribute("startNavi",pageInfo.get("startNavi"));
+				model.addAttribute("endNavi",pageInfo.get("endNavi"));
 				model.addAttribute("nList",nList);
 				return "notice/list";
 			}else {
@@ -202,23 +215,24 @@ public class NoticeController {
 			paramMap.put("searchKeyword", searchKeyword);
 			List<NoticeVO> searchList = nService.searchListByKeyword(paramMap, currentPage);
 			int totalCount = nService.getTotalCount(paramMap);
-			int boardLimit = 10;
-			int maxPage = 0;
-			if(totalCount % boardLimit !=0) {
-				maxPage = totalCount /boardLimit +1;
-			}else {
-				maxPage = totalCount /boardLimit;
-			}
-			int naviLimit = 5;
-			
-			int startNavi = ((currentPage-1)/naviLimit)*naviLimit+1;
-			int endNavi = (startNavi-1)+naviLimit;
-			if(endNavi > maxPage ) {
-				endNavi = maxPage;
-			}
-			model.addAttribute("maxPage",maxPage);
-			model.addAttribute("startNavi",startNavi);
-			model.addAttribute("endNavi",endNavi);
+			Map<String, Integer> pageInfo = pageUtil.generatePageInfo(totalCount, currentPage);
+//			int boardLimit = 10;
+//			int maxPage = 0;
+//			if(totalCount % boardLimit !=0) {
+//				maxPage = totalCount /boardLimit +1;
+//			}else {
+//				maxPage = totalCount /boardLimit;
+//			}
+//			int naviLimit = 5;
+//			
+//			int startNavi = ((currentPage-1)/naviLimit)*naviLimit+1;
+//			int endNavi = (startNavi-1)+naviLimit;
+//			if(endNavi > maxPage ) {
+//				endNavi = maxPage;
+//			}
+			model.addAttribute("maxPage",pageInfo.get("maxPage"));
+			model.addAttribute("startNavi",pageInfo.get("startNavi"));
+			model.addAttribute("endNavi",pageInfo.get("endNavi"));
 			model.addAttribute("seachList", searchList);
 			model.addAttribute("searchCondition",searchCondition);
 			model.addAttribute("searchKeyword",searchKeyword);

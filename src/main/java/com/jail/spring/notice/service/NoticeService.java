@@ -3,13 +3,15 @@ package com.jail.spring.notice.service;
 import java.util.List;
 import java.util.Map;
 
+import com.jail.spring.notice.controller.dto.NoticeAddRequest;
+import com.jail.spring.notice.controller.dto.NoticeModifyRequest;
 import com.jail.spring.notice.domain.NoticeVO;
 
 public interface NoticeService {
 	
 	
 	//콘트롤러에서 넘어옴!!1번째!
-	int insertNotice(NoticeVO notice);
+	int insertNotice(NoticeAddRequest notice);
 	//리스트!
 	List<NoticeVO> selectList(int currentPage);
 	
@@ -18,7 +20,7 @@ public interface NoticeService {
 	
 	NoticeVO selectOneByNo(int noticeNo);
 	//파일수정
-	int updateNotice(NoticeVO notice);
+	int updateNotice(NoticeModifyRequest notice);
 	//파일삭제?
 	
 	//검색1.
