@@ -15,5 +15,7 @@ public interface BoardStore {
 	int insertBoard(SqlSession session, BoardAddRequest board);
 	//detail
 	BoardVO slectOneByNo(SqlSession session, int boardNo);
+	//delete(삭제)
+	int deleteBoard(SqlSession session, int boardNo);
 
 }

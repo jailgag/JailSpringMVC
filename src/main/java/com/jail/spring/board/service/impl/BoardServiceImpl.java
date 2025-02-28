@@ -42,5 +42,11 @@ public class BoardServiceImpl implements BoardService{
 		BoardVO board = bStore.slectOneByNo(session, boardNo);
 		return board;
 	}
+	//2삭제
+	@Override
+	public int deleteBoard(int boardNo) {
+		int result = bStore.deleteBoard(session,boardNo);
+		return result;
+	}
 
 }

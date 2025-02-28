@@ -89,4 +89,33 @@ public class BoardController {
 				return "common/error";
 			}
 	}
+	
+//	@GetMapping("/board/modify/{boardNo}")
+//	public String showBoardModifyForm(@PathVariable int boardNo
+//			,Model model
+//			) {
+//		try {
+//			BoardVO board = bService.selectOneByNo(boardNo);
+//			model.addAttribute("board",board);
+//			return "board/modify";
+//		} catch (Exception e) {
+//			// TODO: handle exception
+//			model.addAttribute("errorMsg",e.getMessage());
+//			return "common/error";
+//		}
+//	}
+	
+	@GetMapping("/board/delete/{boardNo}")
+	public String deleteBoard(@PathVariable int boardNo
+			,Model model) {
+		try {
+			int result = bService.deleteBoard(boardNo);
+			return "redirect:/board/list";
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			model.addAttribute("errorMsg",e.getMessage());
+			return "common/error";
+		}
+	}
 }

@@ -29,4 +29,9 @@
 	<insert id="insertBoard">
 		INSERT INTO BOARD_TBL VALUES(SEQ_BOARD_NO.NEXTVAL, #{boardTitle}, #{boardContent}, #{boardWriter}, #{boardFilename} ,#{boardFileRename}, #{boardFilepath}, DEFAULT, DEFAULT, DEFAULT, DEFAULT)
 	</insert>
+	
+	<update id="deleteBoard">
+		UPDATE BOARD_TBL SET BOARD_YN = 'N' WHERE BOARD_NO = #{boardNo}
+	</update>
+	
 </mapper>

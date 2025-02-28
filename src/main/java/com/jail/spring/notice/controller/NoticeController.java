@@ -43,6 +43,8 @@ public class NoticeController {
 	public String showNoticeForm() {
 		return "notice/insert";
 	}
+	//수정작업했음(02/26)
+	
 	@RequestMapping(value="/notice/insert", method=RequestMethod.POST)
 	public String noticeInsert(
 			@ModelAttribute NoticeAddRequest notice
@@ -55,20 +57,19 @@ public class NoticeController {
 				String noticeFilename = null;
 				String noticeFileRename = null;
 				String noticeFilepath = null;
-				Map<String,String> fileInfo =fileUtil.saveFile(uploadFile,session);
-				noticeFilename = fileInfo.get("noticeFilename");
-				if(noticeFilename != null) {
-					noticeFileRename = fileInfo.get("noticeFileRename");
-					noticeFilepath  = fileInfo.get("noticeFilepath");
-					
+				//Map<Stirng, String> fileInfo = fileUtil.saveFile(uploadFile, session, noticeFilepath);
+				//notice
+				if(uploadFile != null && !uploadFile.getOriginalFilename().isBlank()) {
+					Map<String,String> fileInfo
+					=fileUtil.saveFile(uploadFile,session,"notice");
+					noticeFilename = fileInfo.get("nFilename");
+					noticeFileRename = fileInfo.get("nFileRename");
+					noticeFilepath = fileInfo.get("nFilepath");
+					notice.setNoticeWriter(noticeWriter);
+					notice.setNoticeFilename(noticeFilename);
+					notice.setNoticeFileRename(noticeFileRename);
+					notice.setNoticeFilepath(noticeFilepath);
 				}
-				//NoticeVO notice = new NoticeVO(noticeSubject, noticeContent, noticeWriter);
-				//noticeFilename = fileInfo.get("noticeFilname");
-				//NoticeVO notice = new NoticeVO(noticeSubject, noticeContent, noticeWriter, noticeFilename, noticeFileRename, noticeFilepath);
-				notice.setNoticeWriter(noticeWriter);
-				notice.setNoticeFilename(noticeFilename);
-				notice.setNoticeFileRename(noticeFileRename);
-				notice.setNoticeFilepath(noticeFilepath);
 				int result = nService.insertNotice(notice);
 				if(result > 0 ) {
 					return "redirect:/notice/list";
@@ -113,12 +114,18 @@ public class NoticeController {
  				String noticeFileRename = null;
  				String noticeFilepath = null;
  				if(reloadFile != null && !reloadFile.getOriginalFilename().isBlank()) {
- 					Map<String, String> fileInfo = fileUtil.saveFile(reloadFile, session);
- 					noticeFilename = fileInfo.get("noticeFilename");
- 					if(noticeFilename != null) {
- 						noticeFileRename = fileInfo.get("noticeFileRename");
- 						noticeFilepath = fileInfo.get("noticeFilepath");
- 					}
+ 					//Map<String, String> fileInfo 
+ 					//= fileUtil.saveFile(reloadFile, session,"notice");
+ 					//noticeFilename = fileInfo.get("noticeFilename");
+ 					//if(noticeFilename != null) {
+ 					//	noticeFileRename = fileInfo.get("noticeFileRename");
+ 					//	noticeFilepath = fileInfo.get("noticeFilepath");
+ 				//	}
+ 					Map<String, String> fileInfo
+ 					 = fileUtil.saveFile(reloadFile, session, "notice");
+ 					noticeFilename = fileInfo.get("nFilename");
+ 					noticeFileRename = fileInfo.get("nFileRename");
+ 					noticeFilepath = fileInfo.get("nfilepath");
  					notice.setNoticeFilename(noticeFilename);
  					notice.setNoticeFileRename(noticeFileRename);
  					notice.setNoticeFilepath(noticeFilepath);

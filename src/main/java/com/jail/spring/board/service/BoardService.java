@@ -12,4 +12,6 @@ public interface BoardService {
 	int insertBoard(BoardAddRequest board);
 	//1detail
 	BoardVO selectOneByNo(int boardNo);
+	//delete()
+	int deleteBoard(int boardNo);
 }

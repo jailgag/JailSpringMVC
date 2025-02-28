@@ -31,5 +31,11 @@ public class BoardStoreLogic implements BoardStore {
 		BoardVO board =session.selectOne("BoardMapper.slectOneByNo",boardNo);
 		return board;
 	}
+	//삭제!
+	@Override
+	public int deleteBoard(SqlSession session, int boardNo) {
+		int result = session.update("BoardMapper.deleteBoard",boardNo);
+		return result;
+	}
 	
 }
