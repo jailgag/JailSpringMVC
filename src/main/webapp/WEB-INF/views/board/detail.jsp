@@ -4,9 +4,10 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>자유게시판 - 상세</title>
+<title>게시글 - 상세2</title>
 </head>
 <body>
+	<body>
 	<h1>게시글 - 상세</h1>
 	<table>
 		<tr>
@@ -31,30 +32,33 @@
 		</tr>
 	</table>
 	<br>
-		<div>
-			<button type="button" onclick="showModifyForm(${board.boardNo});">수정하기</button>
-			<button type="button" onclick="deleteConfirm(${board.boardNo})">삭제하기</button>
-			<button type="button" id="listBtn">목록으로</button>
-			<button type="button" onclick="goBack();">뒤로가기</button>
-		</div>
-		<script>
- 			function showModifyForm(boardNo) {
-//				location.href="/board/modify/"+boardNo;	
-					alert("modify");
- 				}
-			function deleteConfirm(boardNo) {
-				var result = confirm("정말로 삭제하시겠습니까?");
-				if(result) {
-					location.href="/board/delete/"+boardNo;
-				}
-			}
-			document.querySelector("#listBtn")
-			.addEventListener("click",function)() {
-			location.href="/board/list";	
-			});
-			function goBack() {
-				history.go(-1);
-			}
-		</script>
-	</body>
+	<div>
+		<button type="button" onclick="showModifyForm(${board.boardNo});">수정하기</button>
+		<button type="button" onclick="deleteConfirm(${board.boardNo})">삭제하기</button>
+		<button type="button" id="listBtn">목록으로</button>
+		<button type="button" onclick="goBack();">뒤로가기</button>
+	</div>
+	<script>
+	function deleteConfirm(boardNo) {
+		var result = confirm("정말로 삭제하시겠습니까?");
+		if(result) {
+			location.href="/board/delete/"+boardNo;
+		}
+	}
+	
+	function showModifyForm(boardNo) {
+ 		location.href = "/board/modify/"+boardNo;
+//		alert("modify");
+	}	
+	
+		document.querySelector("#listBtn")
+		.addEventListener("click", function() {
+			location.href ="/board/list";
+		});
+		
+		function goBack() {
+			history.go(-1);
+		}
+	</script>
+</body>
 </html>
