@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.jail.spring.board.controller.dto.BoardAddRequest;
+import com.jail.spring.board.controller.dto.BoardModifyRequest;
 import com.jail.spring.board.domain.BoardVO;
 import com.jail.spring.board.service.BoardService;
 import com.jail.spring.board.store.BoardStore;
@@ -46,6 +47,12 @@ public class BoardServiceImpl implements BoardService{
 	@Override
 	public int deleteBoard(int boardNo) {
 		int result = bStore.deleteBoard(session,boardNo);
+		return result;
+	}
+	//modify (수정)
+	@Override
+	public int updateBoard(BoardModifyRequest board) {
+		int result = bStore.updateBoard(session, board);
 		return result;
 	}
 

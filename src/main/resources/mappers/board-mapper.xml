@@ -30,8 +30,14 @@
 		INSERT INTO BOARD_TBL VALUES(SEQ_BOARD_NO.NEXTVAL, #{boardTitle}, #{boardContent}, #{boardWriter}, #{boardFilename} ,#{boardFileRename}, #{boardFilepath}, DEFAULT, DEFAULT, DEFAULT, DEFAULT)
 	</insert>
 	
+	<update id="updateBoard">
+		UPDATE BOARD_TBL SET BOARD_TITLE = #{boardTitle}, BOARD_CONTENT = #{boardContent}
+		, BOARD_FILENAME = #{boardFilename}, BOARD_FILE_RENAME = #{boardFileRename}, BOARD_FILEPATH = #{boardFilepath}, UPDATE_DATE = DEFAULT WHERE BOARD_NO = #{boardNo} 
+	</update>
+	
 	<update id="deleteBoard">
 		UPDATE BOARD_TBL SET BOARD_YN = 'N' WHERE BOARD_NO = #{boardNo}
 	</update>
+	
 	
 </mapper>

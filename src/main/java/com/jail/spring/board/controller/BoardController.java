@@ -113,32 +113,41 @@ public class BoardController {
 	//jsp에추가!<input type="hidden" name="boardWriter" value="${board.boardWriter }">
 	
 	@PostMapping("/board/modify")
-	public void modifyBoard(@ModelAttribute BoardModifyRequest board
+	public String modifyBoard(@ModelAttribute BoardModifyRequest board
 			,@RequestParam("reloadFile") MultipartFile reloadFile
-			,HttpSession session) {
+			,HttpSession session
+			,Model model) {
 		try {
 			//여기if는 로그인체크
-			if(session.getAttribute("memberId") != null) {
-				String memberId = (String)session.getAttribute("memberId");
-				boolean check = memberId.equals(board.getBoardWriter());
-				if(check) {
-					//업로드 값을 셋팅해주는코드아래
-					if(reloadFile != null && !reloadFile.getOriginalFilename().isBlank()) {
-						Map<String, String> fileInfo = fileUtil.saveFile(reloadFile, session, "board");
-						//()안에 bFilename으로!common에FileUtill클래스에있는 
-						//result.put(prefix+"Filename", noticeFilename);의값??
-						//시간초과됨!!...if문 옮기기전까지 코드작성!!
-						board.setBoardFilename(fileInfo.get("bFilename"));
-						board.setBoardFileRename(fileInfo.get("bfileRename"));
-						board.setBoardFilepath(fileInfo.get("bFilepath"));
-					}
-					int result = bService.updateBoard(board);
-				}
+			if(session.getAttribute("memberId") == null) {
+				model.addAttribute("errorMsg","로그인이 필요합니다!!");
+				return "common/error";
 			}
+			String memberId = (String)session.getAttribute("memberId");
+			if(!memberId.equals(board.getBoardWriter())) {
+				model.addAttribute("errorMsg","자신이 작성한 글만 수정할수 있습니다!!");
+				return "common/error";
+			}
+			//업로드 값을 셋팅해주는코드아래
+			if(reloadFile != null && !reloadFile.getOriginalFilename().isBlank()) {
+				Map<String, String> fileInfo = fileUtil.saveFile(reloadFile, session, "board");
+				//()안에 bFilename으로!common에FileUtill클래스에있는 
+				//result.put(prefix+"Filename", noticeFilename);의값??
+				//시간초과됨!!...if문 옮기기전까지 코드작성!!
+				board.setBoardFilename(fileInfo.get("bFilename"));
+				board.setBoardFileRename(fileInfo.get("bfileRename"));
+				board.setBoardFilepath(fileInfo.get("bFilepath"));
+			}
+			int result = bService.updateBoard(board);
+			//아래코드 핸들러 맵핑!!
+			return "redirect:/board/detail/"+board.getBoardNo();
 		} catch (Exception e) {
-			// TODO: handle exception
+			e.printStackTrace();
+			model.addAttribute("errorMsg",e.getMessage());
+			return "common/error";
 		}
 	}
+	
 	
 	//@RequestParam
 	
