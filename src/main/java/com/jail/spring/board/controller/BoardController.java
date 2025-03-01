@@ -77,13 +77,13 @@ public class BoardController {
 		}
 	}
 	
-	@GetMapping("/board/detail/{boardNo}")
+	@GetMapping("/board/detail2/{boardNo}")
 	public String showBoardDetail(@PathVariable("boardNo") int boardNo
 				,Model model) {
 			try {
 				BoardVO board = bService.selectOneByNo(boardNo);
 				model.addAttribute("board",board);
-				return "board/detail";
+				return "board/detail2";
 			} catch (Exception e) {
 				model.addAttribute("errorMsg",e.getMessage());
 				return "common/error";
@@ -104,6 +104,8 @@ public class BoardController {
 //			return "common/error";
 //		}
 //	}
+	
+	//@RequestParam
 	
 	@GetMapping("/board/delete/{boardNo}")
 	public String deleteBoard(@PathVariable int boardNo

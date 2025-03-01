@@ -43,7 +43,7 @@
 				<c:forEach items="${bList }" var="board" varStatus="i">
 					<tr>
 						<td>${board.boardNo }</td>
-						<td><a href="/board/detail/${board.boardNo}">${board.boardTitle }</a></td>
+						<td><a href="/board/detail2/${board.boardNo}">${board.boardTitle }</a></td>
 						<td>${board.boardWriter }</td>
 						<td>${board.boardDate }</td>
 						<td>${board.boardFilename }</td>

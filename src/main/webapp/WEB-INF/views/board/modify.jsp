@@ -11,7 +11,7 @@
 		<h1>게시글 수정</h1>
 		<fieldset>
 			<legend>게시글수정</legend>
-			<form action="/board/modify" method="post">
+			<form action="" method="post">
 				제목: <input type="text" name=""> <br>
 				
 			</form>
