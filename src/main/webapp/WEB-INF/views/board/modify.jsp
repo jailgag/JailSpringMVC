@@ -11,6 +11,9 @@
 		<fieldset>
 			<legend>게시글수정</legend>
 			<form action="/board/modify" method="post" enctype="multipart/form-data">
+				<input type="hidden" name="boardFilename" value="${board.boardFilename}">
+				<input type="hidden" name="boardFileRename" value="${board.boardFileRename}">
+				<input type="hidden" name="boardFilepath" value="${board.boardFilepath}">
 				<input type="hidden" name="boardNo" value="${board.boardNo }"> 
 				<input type="hidden" name="boardWriter" value="${board.boardWriter }"> 
 				제목: <input type="text" name="boardTitle" value="${board.boardTitle }"> <br>

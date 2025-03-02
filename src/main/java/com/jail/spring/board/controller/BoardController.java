@@ -133,9 +133,8 @@ public class BoardController {
 				Map<String, String> fileInfo = fileUtil.saveFile(reloadFile, session, "board");
 				//()안에 bFilename으로!common에FileUtill클래스에있는 
 				//result.put(prefix+"Filename", noticeFilename);의값??
-				//시간초과됨!!...if문 옮기기전까지 코드작성!!
 				board.setBoardFilename(fileInfo.get("bFilename"));
-				board.setBoardFileRename(fileInfo.get("bfileRename"));
+				board.setBoardFileRename(fileInfo.get("bFileRename"));
 				board.setBoardFilepath(fileInfo.get("bFilepath"));
 			}
 			int result = bService.updateBoard(board);
