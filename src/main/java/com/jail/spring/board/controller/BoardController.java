@@ -20,6 +20,7 @@ import com.jail.spring.board.controller.dto.BoardModifyRequest;
 import com.jail.spring.board.domain.BoardVO;
 import com.jail.spring.board.service.BoardService;
 import com.jail.spring.common.FileUtil;
+import com.jail.spring.common.PageUtil;
 
 @Controller
 public class BoardController {
@@ -27,12 +28,18 @@ public class BoardController {
 	private BoardService bService;
 	
 	private FileUtil fileUtil;
+	//아래코드 페이징 추가!
+	private PageUtil pageUtil;
 	
 
 	@Autowired
-	public BoardController(BoardService bService, FileUtil fileUtil) {
+	public BoardController(
+			BoardService bService
+			, FileUtil fileUtil
+			, PageUtil pageUtil) {
 		this.bService = bService;
 		this.fileUtil = fileUtil;
+		this.pageUtil = pageUtil;
 	}
 	//페이징처리 시작!아래 RequestParam("page"~~부터!!
 	//value="page",defaultValue="1")추가해줬음!
@@ -43,6 +50,12 @@ public class BoardController {
  			,Model model) {
 		try {
 			List<BoardVO> bList = bService.selectBoardList(currentPage);
+			int totalCount = 243;
+			//아래(243)은 내꺼 게시글 전체 갯수숫자적어줌!
+			Map<String, Integer> pageInfo = pageUtil.generatePageInfo(243, currentPage);
+			model.addAttribute("maxPage", pageInfo.get("maxPage"));
+			model.addAttribute("startNavi" ,pageInfo.get("startNavi"));
+			model.addAttribute("endNavi", pageInfo.get("endNavi"));
 			model.addAttribute("bList",bList);
 			return "board/list";
 		} catch (Exception e) {
