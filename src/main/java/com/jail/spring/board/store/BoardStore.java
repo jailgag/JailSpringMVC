@@ -12,7 +12,7 @@ public interface BoardStore {
 	//여기도 온라인으로 정리!
 	
 	//1.리스트
-	List<BoardVO> selectBoardList(SqlSession session);
+	List<BoardVO> selectBoardList(SqlSession session,int currentPage);
 	//detail
 	BoardVO slectOneByNo(SqlSession session, int boardNo);
 	//등록

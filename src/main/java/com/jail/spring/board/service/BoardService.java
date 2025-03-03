@@ -9,7 +9,7 @@ import com.jail.spring.board.domain.BoardVO;
 public interface BoardService {
 	
 	//online으로 정리!!
-	List<BoardVO> selectBoardList();
+	List<BoardVO> selectBoardList(int currentPage);
 	//1detail
 	BoardVO selectOneByNo(int boardNo);
 	//등록!

@@ -25,9 +25,9 @@ public class BoardServiceImpl implements BoardService{
 	}
 	
 	@Override
-	public List<BoardVO> selectBoardList() {
+	public List<BoardVO> selectBoardList(int currentPage) {
 		// TODO Auto-generated method stub
-		List<BoardVO> bList = bStore.selectBoardList(session);
+		List<BoardVO> bList = bStore.selectBoardList(session,currentPage);
 		return bList;
 	}
 

@@ -2,6 +2,7 @@ package com.jail.spring.board.store.impl;
 
 import java.util.List;
 
+import org.apache.ibatis.session.RowBounds;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
@@ -15,9 +16,12 @@ public class BoardStoreLogic implements BoardStore {
 
 	
 	@Override
-	public List<BoardVO> selectBoardList(SqlSession session) {
-		// TODO Auto-generated method stub
-		List<BoardVO> bList = session.selectList("BoardMapper.selectBoardList");
+	public List<BoardVO> selectBoardList(SqlSession session,int currentPage) {
+		//아래 limit가10이면 10개 5면 5개?!
+		int limit = 10;
+		int offset = (currentPage-1)*limit;
+		RowBounds rowBounds = new RowBounds(offset,limit);
+		List<BoardVO> bList = session.selectList("BoardMapper.selectBoardList", null, rowBounds);
 		return bList;
 	}
 

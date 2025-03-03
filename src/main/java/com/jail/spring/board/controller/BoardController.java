@@ -34,11 +34,15 @@ public class BoardController {
 		this.bService = bService;
 		this.fileUtil = fileUtil;
 	}
+	//페이징처리 시작!아래 RequestParam("page"~~부터!!
+	//value="page",defaultValue="1")추가해줬음!
 	
 	@GetMapping("/board/list")
-	public String showBoardList(Model model) {
+	public String showBoardList(
+			@RequestParam(value="page",defaultValue="1") int currentPage 
+ 			,Model model) {
 		try {
-			List<BoardVO> bList = bService.selectBoardList();
+			List<BoardVO> bList = bService.selectBoardList(currentPage);
 			model.addAttribute("bList",bList);
 			return "board/list";
 		} catch (Exception e) {
@@ -47,6 +51,7 @@ public class BoardController {
 		}
 		
 	}
+	
 	@GetMapping("/board/insert")
 	public String showBoardInsertForm() {
 		return "board/insert";
