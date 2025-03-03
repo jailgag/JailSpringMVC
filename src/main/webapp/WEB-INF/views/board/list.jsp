@@ -51,6 +51,19 @@
 				</c:forEach>
 			</c:otherwise>
 		</c:choose>
+		<tr>
+			<!-- colspand이랑 작성하면 가운데로! -->
+			<td colspan="4" align="center">
+				<a href="/board/list?page=1">1</a>
+				<a href="/board/list?page=2">2</a>
+				<a href="/board/list?page=3">3</a>
+				<a href="/board/list?page=4">4</a>
+				<a href="/board/list?page=5">5</a>
+			</td>
+			<td>
+				<button type="button">글쓰기</button>
+			</td>	
+		</tr>
 	</table>
 </body>
 </html>
