@@ -16,12 +16,13 @@
 		<result property="updateDate" column="UPDATE_DATE"/>
 		<result property="boardYn" column="BOARD_YN"/>
 	</resultMap>
-	
-	
+	<!-- <select id="selectBoardList" resultMap="board"> -->
+	<!--  -->
 	<select id="selectBoardList" resultMap="boardResultMap">
 		SELECT * FROM BOARD_TBL WHERE BOARD_YN = 'Y' ORDER BY BOARD_NO DESC
 	</select>
-	
+	<!--<select id="slectOneByNo" resultMap="board">  -->
+	<!--  -->
 	<select id="slectOneByNo" resultMap="boardResultMap">
 		SELECT * FROM BOARD_TBL WHERE BOARD_YN = 'Y' AND BOARD_NO = #{boardNo}
 	</select>
@@ -39,5 +40,8 @@
 		UPDATE BOARD_TBL SET BOARD_YN = 'N' WHERE BOARD_NO = #{boardNo}
 	</update>
 	
+	<select id="getTotalCount" resultType="_int">
+		SELECT COUNT(*) FROM BOARD_TBL
+	</select>
 	
 </mapper>

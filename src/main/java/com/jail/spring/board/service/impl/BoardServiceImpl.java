@@ -56,4 +56,11 @@ public class BoardServiceImpl implements BoardService{
 		return result;
 	}
 
+	//페이징!
+	@Override
+	public int getTotalCount() {
+		int totalCount = bStore.getTotalCount(session);
+		return totalCount;
+	}
+
 }

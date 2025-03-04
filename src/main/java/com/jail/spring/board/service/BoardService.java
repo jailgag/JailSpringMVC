@@ -18,4 +18,7 @@ public interface BoardService {
 	int updateBoard(BoardModifyRequest board);
 	//2.delete()
 	int deleteBoard(int boardNo);
+	//페이징
+	int getTotalCount();
+	
 }

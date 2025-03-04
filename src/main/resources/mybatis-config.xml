@@ -32,6 +32,8 @@
  		<!-- NULL일때 NULL로 인식하도록 함 -->
  	<settings>
  		<setting name="jdbcTypeForNull" value="NULL"/>
+ 		<!-- <setting name="mapUnderscoreToCamelCase" value="true"/> -->
+ 		
  	</settings>
  	
  	<typeAliases>

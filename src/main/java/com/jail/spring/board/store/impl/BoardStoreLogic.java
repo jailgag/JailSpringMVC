@@ -50,5 +50,11 @@ public class BoardStoreLogic implements BoardStore {
 		int result = session.update("BoardMapper.deleteBoard",boardNo);
 		return result;
 	}
+	//페이징!
+	@Override
+	public int getTotalCount(SqlSession session) {
+		int totalCount = session.selectOne("BoardMapper.getTotalCount");
+		return totalCount;
+	}
 	
 }

@@ -21,5 +21,7 @@ public interface BoardStore {
 	int updateBoard(SqlSession session, BoardModifyRequest board);
 	//delete(삭제)
 	int deleteBoard(SqlSession session, int boardNo);
+	//페이징!
+	int getTotalCount(SqlSession session);
 
 }

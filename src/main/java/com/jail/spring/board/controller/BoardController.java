@@ -44,15 +44,17 @@ public class BoardController {
 	//페이징처리 시작!아래 RequestParam("page"~~부터!!
 	//value="page",defaultValue="1")추가해줬음!
 	
+	
 	@GetMapping("/board/list")
 	public String showBoardList(
 			@RequestParam(value="page",defaultValue="1") int currentPage 
  			,Model model) {
 		try {
 			List<BoardVO> bList = bService.selectBoardList(currentPage);
-			int totalCount = 243;
+			int totalCount = bService.getTotalCount();
 			//아래(243)은 내꺼 게시글 전체 갯수숫자적어줌!
-			Map<String, Integer> pageInfo = pageUtil.generatePageInfo(243, currentPage);
+			Map<String, Integer> pageInfo 
+			= pageUtil.generatePageInfo(totalCount, currentPage);
 			model.addAttribute("maxPage", pageInfo.get("maxPage"));
 			model.addAttribute("startNavi" ,pageInfo.get("startNavi"));
 			model.addAttribute("endNavi", pageInfo.get("endNavi"));
