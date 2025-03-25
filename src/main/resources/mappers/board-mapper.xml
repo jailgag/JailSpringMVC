@@ -16,14 +16,14 @@
 		<result property="updateDate" column="UPDATE_DATE"/>
 		<result property="boardYn" column="BOARD_YN"/>
 	</resultMap>
-	<!-- <select id="selectBoardList" resultMap="board"> -->
 	<!--  -->
-	<select id="selectBoardList" resultMap="boardResultMap">
+	<!-- <select id="selectBoardList" resultMap="boardResultMap"> -->
+	<select id="selectBoardList" resultType="board">
 		SELECT * FROM BOARD_TBL WHERE BOARD_YN = 'Y' ORDER BY BOARD_NO DESC
 	</select>
 	<!--<select id="slectOneByNo" resultMap="board">  -->
-	<!--  -->
-	<select id="slectOneByNo" resultMap="boardResultMap">
+	<!--  <select id="slectOneByNo" resultMap="boardResultMap">-->
+	<select id="slectOneByNo" resultType="board">
 		SELECT * FROM BOARD_TBL WHERE BOARD_YN = 'Y' AND BOARD_NO = #{boardNo}
 	</select>
 	
@@ -41,7 +41,7 @@
 	</update>
 	
 	<select id="getTotalCount" resultType="_int">
-		SELECT COUNT(*) FROM BOARD_TBL
+		SELECT COUNT(*) FROM BOARD_TBL WHERE BOARD_YN = 'Y'
 	</select>
 	
 </mapper>
